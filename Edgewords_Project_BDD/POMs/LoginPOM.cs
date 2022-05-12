@@ -25,7 +25,7 @@ namespace EdgewordsProjectBDD.POMs
 
         public void LoginSteps(string Username)
         {
-            Dismiss.Click();
+            Dismiss.Click(); //dismiss blue banner
             Loginname.SendKeys(Username);
         }
 

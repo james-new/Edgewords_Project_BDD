@@ -21,8 +21,9 @@ namespace EdgewordsProjectBDD
         public void GivenAUserHasLoggedOnToTheWebsite()
         {
             LoginPOM Login = new LoginPOM(driver);
-            Login.LoginSteps(Environment.GetEnvironmentVariable("Username"));
+            Login.LoginSteps(Environment.GetEnvironmentVariable("Username")); 
             Login.EnterPassword(Environment.GetEnvironmentVariable("Password"));
+            //Inputs environment elements
         }
 
         [Given(@"I have an item in my basket")]
@@ -33,7 +34,7 @@ namespace EdgewordsProjectBDD
             Login.Shop.Click(); //Click shop from login page
 
             ShoppingPOM Shopping = new ShoppingPOM(driver);
-            Shopping.AddToBasket();
+            Shopping.AddToBasket();//adds item to basket
             
             
         }
@@ -44,7 +45,7 @@ namespace EdgewordsProjectBDD
         {
             BasketPOM basketPOM = new BasketPOM(driver);
             basketPOM.Coupon.SendKeys(Coupon);
-            basketPOM.Apply.Click();
+            basketPOM.Apply.Click(); //applies coupon
         }
 
         [Then(@"I get (.*)% off the item price")]
@@ -52,8 +53,8 @@ namespace EdgewordsProjectBDD
         {
             
             BasketPOM basketPOM = new BasketPOM(driver);
-            basketPOM.BasketGetPrices();
-            basketPOM.BasketCalcDiscount();
+            basketPOM.BasketGetPrices(); //gets the total price and discount ammount
+            basketPOM.BasketCalcDiscount(); //calculates the discount percentage
 
             Assert.That(BasketPOM.Discount == SetDiscount, $"The discount was {BasketPOM.Discount}, not {SetDiscount}");
         }
@@ -61,13 +62,11 @@ namespace EdgewordsProjectBDD
         public void WhenIOrderTheItem()
         {
 
-            BasketPOM basketPOM = new BasketPOM(driver);
-            basketPOM.Checkout.Click();
+            BasketPOM Basket = new BasketPOM(driver);
+            Basket.Checkout.Click(); 
 
             CheckoutPOM Checkout = new CheckoutPOM(driver);
-            Checkout.CheckoutEnterInfo();
-           
-            
+            Checkout.CheckoutEnterInfo();     
            
         }
 
@@ -76,12 +75,11 @@ namespace EdgewordsProjectBDD
 
         {
             CheckoutPOM Checkout = new CheckoutPOM(driver);
-            Checkout.HoldOrderNumber();
-            Console.WriteLine($"The OG number is {Checkout.OrderNumber}");
+            Checkout.HoldOrderNumber(); //gets the order number from the checkout
           
 
             MyAccountPOM MyAccount = new MyAccountPOM(driver);
-            MyAccount.GetOrderNumber();
+            MyAccount.GetOrderNumber(); //gets the order number from the account page
             Console.WriteLine(Checkout.OrderNumber);
             Console.WriteLine(MyAccount.OrderNumberNoHash);
 

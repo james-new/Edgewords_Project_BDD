@@ -48,7 +48,6 @@ namespace EdgewordsProjectBDD.POMs
         {
             ElementPresent(driver, By.CssSelector(".order > strong"));
             OrderNumber = OrderNo.Text;
-            Console.WriteLine($"The OG number is {OrderNumber}");
             MyAccount.Click();
         }
 

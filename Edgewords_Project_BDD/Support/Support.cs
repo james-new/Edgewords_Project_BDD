@@ -15,6 +15,7 @@ namespace EdgewordsProjectBDD
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(drv => drv.FindElement(element).Displayed);
+            //10 second wait
         }
 
         public static void ClearAndEnter(IWebElement driver, string info)
@@ -22,6 +23,7 @@ namespace EdgewordsProjectBDD
 
             driver.Clear();
             driver.SendKeys(info);
+            //clears a text box then enters new data
 
         }
 

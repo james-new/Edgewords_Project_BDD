@@ -33,8 +33,8 @@ namespace EdgewordsProjectBDD.POMs
         {
             Orders.Click();
             OrderNumberHash = OrderNumber.Text;
-            OrderNumberNoHash = OrderNumberHash[1..];
-            Console.WriteLine($"The hash removed number is {OrderNumberNoHash}");
+            OrderNumberNoHash = OrderNumberHash[1..]; //removes #
+
         }
     }
 
