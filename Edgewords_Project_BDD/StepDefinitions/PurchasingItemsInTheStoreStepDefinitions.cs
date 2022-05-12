@@ -1,8 +1,7 @@
 using System;
 using TechTalk.SpecFlow;
-
-using static Edgewords_Project_BDD.UserInfo;
-using static Edgewords_Project_BDD.Support;
+using static Edgewords_Project_BDD.Supports;
+using static Edgewords_Project_BDD.Support.Hooks1;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
@@ -16,77 +15,47 @@ namespace Edgewords_Project_BDD
 
     
     public class StepDefinitions
-    {
-        IWebDriver driver = new ChromeDriver();
-        //private readonly ScenarioContext _scenarioContext;
 
-        //public StepDefinitions(ScenarioContext scenarioContext)
-       // {
-            //_scenarioContext = scenarioContext;
-       // }
+    {
+        [Given(@"a user has logged on to the website")]
+        public void GivenAUserHasLoggedOnToTheWebsite()
+        {
+            LoginPOM Login = new LoginPOM(driver);
+            Login.LoginSteps(Environment.GetEnvironmentVariable("Username"));
+            Login.EnterPassword(Environment.GetEnvironmentVariable("Password"));
+        }
+
         [Given(@"I have an item in my basket")]
         public void GivenIHaveAnItemInMyBasket()
         {
-            driver.Manage().Window.Maximize();
-            driver.Url = "https://www.edgewordstraining.co.uk/demo-site/my-account/";
-            LoginPOM LoginPOM = new LoginPOM(driver);
-            LoginPOM.dismiss.Click();
-            LoginPOM.Username.SendKeys(UserInfo.Username);
-            LoginPOM.passowrd.SendKeys(UserInfo.Password);
-            LoginPOM.login.Click();
-            LoginPOM.shop.Click();
+       
+            LoginPOM Login = new LoginPOM(driver);
+            Login.Shop.Click(); //Click shop from login page
 
-
-            var element = driver.FindElement(By.CssSelector("[class='post-27 product type-product status-publish has-post-thumbnail product_cat-accessories first instock sale shipping-taxable purchasable product-type-simple'] [data-product_id]"));
-            Actions actions = new Actions(driver);
-            actions.MoveToElement(element);
-            actions.Perform();
-            //scrolls down to beanie
-
-            ShoppingPOM shoppingPOM = new ShoppingPOM(driver);
-            shoppingPOM.add.Click();
-            ElementPresent(driver, By.CssSelector("a[title='View cart']"));
-            shoppingPOM.basket.Click();
+            ShoppingPOM Shopping = new ShoppingPOM(driver);
+            Shopping.AddToBasket();
+            
             
         }
 
         [When(@"I apply the coupon '(.*)'")]
-        public void WhenIApplyTheCoupon(string edgewords0)
+        public void WhenIApplyTheCoupon(string Coupon)
+           
         {
             BasketPOM basketPOM = new BasketPOM(driver);
-            basketPOM.coupon.SendKeys("edgewords");
-            basketPOM.apply.Click();
-            
+            basketPOM.Coupon.SendKeys(Coupon);
+            basketPOM.Apply.Click();
         }
 
         [Then(@"I get (.*)% off the item price")]
-        public void ThenIGetOffTheItemPrice(int p0)
+        public void ThenIGetOffTheItemPrice(int SetDiscount)
         {
-            ElementPresent(driver, By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount"));
+            
             BasketPOM basketPOM = new BasketPOM(driver);
-            var price = basketPOM.DiscountPrice.Text;
-            Console.WriteLine(price);
-            ElementPresent(driver, By.CssSelector(".woocommerce-remove-coupon"));
-            basketPOM.RemoveCoupon.Click();
-            System.Threading.Thread.Sleep(1000);
-            ElementPresent(driver, By.CssSelector(".remove"));
-            basketPOM.RemoveItem.Click();
-            ElementPresent(driver, By.CssSelector(".button.wc-backward"));
-            basketPOM.Back.Click();
-            ElementPresent(driver, By.LinkText("My account"));
-            ShoppingPOM shoppingPOM = new ShoppingPOM(driver);
-            shoppingPOM.MyAccount.Click();
-            MyAccountPOM myAccountPOM = new MyAccountPOM(driver);
-            myAccountPOM.Logout.Click();
+            basketPOM.BasketGetPrices();
+            basketPOM.BasketCalcDiscount();
 
-            driver.Quit();
-
-            if (price == "£2.70")
-            {
-                Assert.Pass("The discount was 15%");
-            }
-            else
-                Assert.Fail("The discount was not 15%"); ;
+            Assert.That(BasketPOM.Discount == SetDiscount, $"The discount was {BasketPOM.Discount}, not {SetDiscount}");
         }
         [When(@"I order the item")]
         public void WhenIOrderTheItem()
@@ -95,44 +64,29 @@ namespace Edgewords_Project_BDD
             BasketPOM basketPOM = new BasketPOM(driver);
             basketPOM.Checkout.Click();
 
-            CheckoutPOM checkoutPOM = new CheckoutPOM(driver);
-            checkoutPOM.FirstName.Clear();
-            checkoutPOM.FirstName.SendKeys(UserInfo.Name);
-            checkoutPOM.LastName.Clear();
-            checkoutPOM.LastName.SendKeys(UserInfo.Surname);
-            checkoutPOM.HouseNo.Clear();
-            checkoutPOM.HouseNo.SendKeys(UserInfo.HouseNo);
-            checkoutPOM.City.Clear();
-            checkoutPOM.City.SendKeys(UserInfo.City);
-            checkoutPOM.PostCode.Clear();
-            checkoutPOM.PostCode.SendKeys(UserInfo.Postcode);
-            checkoutPOM.Phone.Clear();
-            checkoutPOM.Phone.SendKeys(UserInfo.Phone + Keys.Enter);
+            CheckoutPOM Checkout = new CheckoutPOM(driver);
+            Checkout.CheckoutEnterInfo();
+           
             
+           
         }
 
         [Then(@"the order number will be the same in my account as it is at the checkout")]
         public void ThenTheOrderNumberWillBeTheSameInMyAccountAsItIsAtTheCheckout()
 
         {
-            CheckoutPOM checkoutPOM = new CheckoutPOM(driver);
-            ElementPresent(driver, By.CssSelector(".order > strong"));
-            var OrderNo = "#" + checkoutPOM.OrderNo.Text;
-            Console.WriteLine(OrderNo);
-            checkoutPOM.MyAccount.Click();
-            MyAccountPOM myAccountPOM = new MyAccountPOM(driver);
-            myAccountPOM.Orders.Click();
-            var OrderConfirm = myAccountPOM.OrderNumber.Text;
-            Console.WriteLine(OrderNo);
-            Console.WriteLine(OrderConfirm);
-            driver.Quit();
+            CheckoutPOM Checkout = new CheckoutPOM(driver);
+            Checkout.HoldOrderNumber();
+            Console.WriteLine($"The OG number is {Checkout.OrderNumber}");
+          
 
-            if (OrderNo == OrderConfirm)
-            {
-                Assert.Pass("The order numbers match");
-            }
-            else
-                Assert.Fail("The order numbers do not match");
+            MyAccountPOM MyAccount = new MyAccountPOM(driver);
+            MyAccount.GetOrderNumber();
+            Console.WriteLine(Checkout.OrderNumber);
+            Console.WriteLine(MyAccount.OrderNumberNoHash);
+
+            Assert.That(Checkout.OrderNumber == MyAccount.OrderNumberNoHash, "The order numbers do not match");
+         
         }
     }
 

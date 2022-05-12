@@ -9,19 +9,22 @@ using System.Threading.Tasks;
 
 namespace Edgewords_Project_BDD
 {
-    public static class Support
+    public static class Supports
     {
         public static void ElementPresent(IWebDriver driver, By element)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(drv => drv.FindElement(element).Displayed);
         }
-        public static void Clear(IWebDriver driver, String element)
+
+        public static void ClearAndEnter(IWebElement driver, string info)
         {
 
-            driver.FindElement(By.CssSelector(element)).Clear();
+            driver.Clear();
+            driver.SendKeys(info);
 
         }
+
 
     }
 }

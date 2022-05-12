@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Edgewords_Project_BDD.Supports;
 
 namespace Edgewords_Project_BDD.POMs
 {
@@ -18,7 +19,7 @@ namespace Edgewords_Project_BDD.POMs
 
         public IWebElement LastName => driver.FindElement(By.CssSelector("input#billing_last_name"));
        
-       public IWebElement HouseNo => driver.FindElement(By.CssSelector("input[name='billing_address_1']"));
+        public IWebElement HouseNo => driver.FindElement(By.CssSelector("input[name='billing_address_1']"));
 
         public IWebElement City => driver.FindElement(By.CssSelector("input#billing_city"));
         public IWebElement PostCode => driver.FindElement(By.CssSelector("input#billing_postcode"));
@@ -29,6 +30,28 @@ namespace Edgewords_Project_BDD.POMs
 
         public IWebElement MyAccount => driver.FindElement(By.LinkText("My account"));
 
+        public string OrderNumber;
 
+
+        public void CheckoutEnterInfo()
+        {
+            ClearAndEnter(FirstName, UserInfo.Name);
+            ClearAndEnter(LastName, UserInfo.Surname);
+            ClearAndEnter(HouseNo, UserInfo.HouseNo);
+            ClearAndEnter(City, UserInfo.City);
+            ClearAndEnter(PostCode, UserInfo.Postcode);
+            ClearAndEnter(Phone, UserInfo.Phone + Keys.Enter);
+
+        }
+
+        public void HoldOrderNumber()
+        {
+            ElementPresent(driver, By.CssSelector(".order > strong"));
+            OrderNumber = OrderNo.Text;
+            Console.WriteLine($"The OG number is {OrderNumber}");
+            MyAccount.Click();
+        }
+
+        
     }
 }

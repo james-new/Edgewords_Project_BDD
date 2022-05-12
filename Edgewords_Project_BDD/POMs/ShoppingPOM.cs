@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Edgewords_Project_BDD.Supports;
 
 namespace Edgewords_Project_BDD.POMs
 {
@@ -17,12 +18,19 @@ namespace Edgewords_Project_BDD.POMs
             this.driver = driver;
         }
 
-
-       public IWebElement add => driver.FindElement(By.CssSelector("[class='post-27 product type-product status-publish has-post-thumbnail product_cat-accessories first instock sale shipping-taxable purchasable product-type-simple'] [data-product_id]")); //add beanie to basket
+       public IWebElement Add => driver.FindElement(By.CssSelector("[data-product_id='27']")); //add beanie to basket
         
-       public IWebElement basket => driver.FindElement(By.CssSelector("a[title='View cart']")); //go to basket
+       public IWebElement Basket => driver.FindElement(By.CssSelector("a[title='View cart']")); //go to basket
 
         public IWebElement MyAccount => driver.FindElement(By.LinkText("My account"));
+
+        public void AddToBasket()
+        {
+            Add.Click();
+            ElementPresent(driver, By.CssSelector("a[title='View cart']"));
+            Basket.Click();
+
+        }
     }
 
 }
