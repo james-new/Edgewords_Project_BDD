@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Edgewords_Project_BDD.Supports;
+using static EdgewordsProjectBDD.Supports;
 
 
-namespace Edgewords_Project_BDD.POMs
+namespace EdgewordsProjectBDD.POMs
 {
     internal class BasketPOM
     {

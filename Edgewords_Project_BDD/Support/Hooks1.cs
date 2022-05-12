@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
 
 
- namespace Edgewords_Project_BDD.Support
+ namespace EdgewordsProjectBDD.Support
 
  {
     [Binding]

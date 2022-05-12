@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Edgewords_Project_BDD
+namespace EdgewordsProjectBDD
 
 {
     public static class UserInfo

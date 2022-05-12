@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Edgewords_Project_BDD.POMs
+namespace EdgewordsProjectBDD.POMs
 {
     class LoginPOM
     {

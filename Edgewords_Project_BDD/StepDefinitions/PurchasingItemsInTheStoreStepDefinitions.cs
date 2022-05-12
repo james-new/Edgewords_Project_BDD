@@ -1,15 +1,15 @@
 using System;
 using TechTalk.SpecFlow;
-using static Edgewords_Project_BDD.Supports;
-using static Edgewords_Project_BDD.Support.Hooks1;
+using static EdgewordsProjectBDD.Supports;
+using static EdgewordsProjectBDD.Support.Hooks1;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using NUnit.Framework;
-using Edgewords_Project_BDD.POMs;
+using EdgewordsProjectBDD.POMs;
 
-namespace Edgewords_Project_BDD
+namespace EdgewordsProjectBDD
 {
     [Binding]
 

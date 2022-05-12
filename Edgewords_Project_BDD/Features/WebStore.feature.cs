@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Edgewords_Project_BDD.Features
+namespace EdgewordsProjectBDD.Features
 {
     using TechTalk.SpecFlow;
     using System;
